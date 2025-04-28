@@ -13,6 +13,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from tools import impala_tools
+import os
 
 mcp = FastMCP(name="Cloudera Iceberg MCP Server via Impala")
 
@@ -32,5 +33,8 @@ def get_schema() -> str:
     return impala_tools.get_schema()
 
 if __name__ == "__main__":
+    # Get transport type from environment variable or default to 'stdio'
+    transport = os.getenv('MCP_TRANSPORT', 'stdio')
+
     # Initialize and run the server
-    mcp.run(transport='stdio')
+    mcp.run(transport=transport)
